@@ -67,7 +67,7 @@ internal fun AlbumItem(
                 Text(
                     modifier = Modifier.weight(1f),
                     text = it,
-                    style = style.small.regular,
+                    style = style.base.regular,
                     color = color.text.white200,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
@@ -89,7 +89,7 @@ internal fun AlbumItem(
                 Text(
                     modifier = Modifier.weight(1f),
                     text = it,
-                    style = style.caption.regular,
+                    style = style.small.regular,
                     color = color.text.white600,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
@@ -99,7 +99,7 @@ internal fun AlbumItem(
             items.numberSongs?.let {
                 Text(
                     text = "$it ${getString().songLowerTxt}",
-                    style = style.caption.regular,
+                    style = style.small.regular,
                     color = color.text.white600,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
