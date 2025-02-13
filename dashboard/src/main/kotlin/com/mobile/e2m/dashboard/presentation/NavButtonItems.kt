@@ -1,7 +1,7 @@
 package com.mobile.e2m.dashboard.presentation
 
 import com.mobile.e2m.core.ui.navigation.route.AppNavigationRoute
-import com.mobile.e2m.dashboard.R
+import com.mobile.e2m.core.ui.R
 import kotlinx.serialization.Serializable
 
 @Serializable

@@ -18,9 +18,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.zIndex
 import com.mobile.e2m.core.ui.theme.E2MTheme
-import com.mobile.e2m.home.R
+import com.mobile.e2m.core.ui.R
 
 @Composable
 internal fun HomeRecommendAlbum(
@@ -29,9 +28,7 @@ internal fun HomeRecommendAlbum(
     val size = E2MTheme.alias.size
 
     Row(
-        modifier = modifier
-            .padding(horizontal = size.spacing.small)
-            .padding(top = size.spacing.large),
+        modifier = modifier.padding(horizontal = size.spacing.small),
         horizontalArrangement = Arrangement.spacedBy(size.spacing.small2x)
     ) {
         repeat(2) {

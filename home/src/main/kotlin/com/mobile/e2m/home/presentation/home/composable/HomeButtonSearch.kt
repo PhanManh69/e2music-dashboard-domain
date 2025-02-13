@@ -2,8 +2,6 @@ package com.mobile.e2m.home.presentation.home.composable
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -11,18 +9,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
+import com.mobile.e2m.core.ui.composable.debounceClickable
 import com.mobile.e2m.core.ui.composable.shadowCustom
 import com.mobile.e2m.core.ui.theme.E2MTheme
-import com.mobile.e2m.home.R
+import com.mobile.e2m.core.ui.R
+import com.mobile.e2m.core.ui.composable.E2MIcon
 import com.mobile.e2m.home.presentation.getString
 
 @Composable
@@ -54,10 +51,7 @@ internal fun HomeButtonSearch(
                 color = color.border.textField,
                 shape = RoundedCornerShape(size.radius.radius7)
             )
-            .clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = null,
-            ) { onClick() },
+            .debounceClickable { onClick() },
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(size.spacing.small)
     ) {
@@ -66,10 +60,9 @@ internal fun HomeButtonSearch(
                 .padding(vertical = size.spacing.smallX)
                 .padding(start = size.spacing.small)
         ) {
-            Icon(
+            E2MIcon(
                 modifier = Modifier.size(size.icon.small1X),
-                painter = painterResource(id = R.drawable.ic_search),
-                contentDescription = null,
+                iconId = R.drawable.ic_search,
                 tint = color.icon.black
             )
         }

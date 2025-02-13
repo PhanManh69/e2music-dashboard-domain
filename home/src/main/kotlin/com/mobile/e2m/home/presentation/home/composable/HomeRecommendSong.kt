@@ -1,6 +1,5 @@
 package com.mobile.e2m.home.presentation.home.composable
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,12 +14,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.mobile.e2m.core.ui.theme.E2MTheme
-import com.mobile.e2m.home.R
+import com.mobile.e2m.core.ui.R
+import com.mobile.e2m.core.ui.composable.E2MImage
 import com.mobile.e2m.home.presentation.getString
 
 @Composable
@@ -73,7 +71,7 @@ private fun HomeRecommendSongItem(
         modifier = modifier
     ) {
         imageId?.let {
-            Image(
+            E2MImage(
                 modifier = Modifier
                     .height(size.spacing.large5x)
                     .width(size.spacing.large6x)
@@ -83,9 +81,8 @@ private fun HomeRecommendSongItem(
                         color = color.border.blur2Light,
                         shape = RoundedCornerShape(size.radius.radius2),
                     ),
-                painter = painterResource(id = imageId),
+                imageId = imageId,
                 contentDescription = name,
-                contentScale = ContentScale.Crop,
             )
         }
 

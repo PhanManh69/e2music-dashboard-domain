@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -23,14 +22,14 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import com.mobile.e2m.core.ui.composable.debounceClickable
 import com.mobile.e2m.core.ui.theme.E2MTheme
-import com.mobile.e2m.home.R
+import com.mobile.e2m.core.ui.R
+import com.mobile.e2m.core.ui.composable.E2MIcon
 import com.mobile.e2m.home.presentation.getString
 
 private val DEFAULT_HEIGHT_VALUE = 240.dp
@@ -106,14 +105,12 @@ private fun HomeHeaderSearch(
             .padding(top = size.spacing.small2x)
     ) {
         iconId?.let {
-            Icon(
+            E2MIcon(
                 modifier = Modifier
                     .size(size.icon.smallX)
-                    .align(Alignment.CenterStart)
-                    .debounceClickable { menuOnClick() },
-                painter = painterResource(id = iconId),
-                contentDescription = null,
-                tint = color.icon.white
+                    .align(Alignment.CenterStart),
+                iconId = iconId,
+                onClick = { menuOnClick() }
             )
         }
 
