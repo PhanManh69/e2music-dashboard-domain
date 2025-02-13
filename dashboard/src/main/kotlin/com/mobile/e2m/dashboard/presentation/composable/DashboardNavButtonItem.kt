@@ -2,8 +2,6 @@ package com.mobile.e2m.dashboard.presentation.composable
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
@@ -12,13 +10,13 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import com.mobile.e2m.core.ui.composable.debounceClickable
 import com.mobile.e2m.core.ui.theme.E2MTheme
 
 @Composable
@@ -34,10 +32,7 @@ internal fun DashboardBottomNavItem(
     val style = E2MTheme.typography
 
     Column(
-        modifier = Modifier.clickable(
-            interactionSource = remember { MutableInteractionSource() },
-            indication = null,
-        ) { onClick() },
+        modifier = Modifier.debounceClickable { onClick() },
         verticalArrangement = Arrangement.spacedBy(size.spacing.small4x),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

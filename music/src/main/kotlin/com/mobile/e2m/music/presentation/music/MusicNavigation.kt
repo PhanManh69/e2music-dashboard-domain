@@ -1,4 +1,4 @@
-package com.mobile.e2m.music.presentation
+package com.mobile.e2m.music.presentation.music
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -10,9 +10,8 @@ internal fun NavController.goToMusic(navOptions: NavOptions? = null) {
     this.navigate(route = AppNavigationRoute.Dashboard.Music, navOptions)
 }
 
-fun NavGraphBuilder.musicDestination(navController: NavController) {
+internal fun NavGraphBuilder.musicDestination() {
     composable<AppNavigationRoute.Dashboard.Music> {
         MusicScreen()
     }
 }
-

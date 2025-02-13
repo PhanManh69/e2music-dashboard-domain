@@ -1,5 +1,6 @@
 package com.mobile.e2m.dashboard.presentation.composable
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,7 +27,7 @@ import com.mobile.e2m.dashboard.presentation.NavBottomItems
 @Composable
 internal fun DashboardNavButton(
     modifier: Modifier = Modifier,
-    navController: NavController
+    navController: NavController,
 ) {
     val bottomPadding = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
     val context = LocalContext.current
@@ -41,7 +42,9 @@ internal fun DashboardNavButton(
     }
 
     Column(
-        modifier = modifier.padding(bottom = bottomPadding)
+        modifier = modifier
+            .padding(bottom = bottomPadding)
+            .background(color = color.surface.black)
     ) {
         HorizontalDivider(
             modifier = Modifier.fillMaxWidth(),
