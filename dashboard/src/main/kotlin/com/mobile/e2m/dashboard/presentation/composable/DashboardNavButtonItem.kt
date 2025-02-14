@@ -1,6 +1,7 @@
 package com.mobile.e2m.dashboard.presentation.composable
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -41,6 +42,10 @@ internal fun DashboardBottomNavItem(
                 modifier = Modifier
                     .size(size.spacing.large3X)
                     .clip(CircleShape)
+                    .background(
+                        color = color.surface.black,
+                        shape = CircleShape,
+                    )
                     .border(
                         width = size.stroke.thickX,
                         color = if (selected) color.border.blur2Light else color.border.whiteDark,

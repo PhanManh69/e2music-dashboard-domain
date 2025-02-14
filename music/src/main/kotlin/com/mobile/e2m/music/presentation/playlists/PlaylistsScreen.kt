@@ -26,6 +26,9 @@ import com.mobile.e2m.core.ui.theme.E2MTheme
 import com.mobile.e2m.core.ui.R
 import com.mobile.e2m.music.presentation.playlists.composable.PlaylistRecommend
 import com.mobile.e2m.music.presentation.playlists.composable.PlaylistYour
+import com.mobile.e2m.music.presentation.playlists.composable.PlaylistYourData
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.plus
 
 @Composable
 internal fun PlaylistsScreen() {
@@ -44,6 +47,16 @@ private fun PlaylistScaffold(
     val boxHeight = remember { mutableIntStateOf(0) }
     val offsetX = remember { mutableFloatStateOf(0f) }
     val offsetY = remember { mutableFloatStateOf(0f) }
+
+    val itemsList = persistentListOf<PlaylistYourData>().plus(
+        List(5) {
+            PlaylistYourData(
+                imageId = R.drawable.img_song,
+                title = "Tên danh sách phát của bạn",
+                numberSongs = 24,
+            )
+        }
+    )
 
     Box(
         modifier = modifier
@@ -74,7 +87,9 @@ private fun PlaylistScaffold(
             }
 
             item {
-                PlaylistYour()
+                PlaylistYour(
+                    items = itemsList,
+                )
             }
         }
 
