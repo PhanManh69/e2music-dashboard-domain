@@ -18,7 +18,7 @@ import com.mobile.e2m.core.ui.navigation.route.AppNavigationRoute
 import com.mobile.e2m.dashboard.presentation.composable.DashboardNavButton
 import com.mobile.e2m.home.navigation.homeRootDestination
 import com.mobile.e2m.music.navigation.musicRootDestination
-import com.mobile.e2m.profile.presentation.profileDestination
+import com.mobile.e2m.profile.navigation.profileRootDestination
 
 @Composable
 internal fun DashboardScreen(
@@ -67,7 +67,7 @@ internal fun DashboardScaffold(
         ) {
             homeRootDestination()
             musicRootDestination()
-            profileDestination(navController)
+            profileRootDestination()
         }
     }
 }

@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -31,6 +30,7 @@ internal fun AlbumLoadItem(
         )
 
         Spacer(modifier = Modifier.height(size.spacing.small2x))
+
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -38,8 +38,8 @@ internal fun AlbumLoadItem(
                 .clip(RoundedCornerShape(size.radius.radius2))
                 .shimmerEffect(),
         )
-        Spacer(modifier = Modifier.height(size.spacing.small4x))
 
+        Spacer(modifier = Modifier.height(size.spacing.small4x))
 
         Box(
             modifier = Modifier

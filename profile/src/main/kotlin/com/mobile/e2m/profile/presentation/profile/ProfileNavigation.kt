@@ -1,4 +1,4 @@
-package com.mobile.e2m.profile.presentation
+package com.mobile.e2m.profile.presentation.profile
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -10,7 +10,7 @@ internal fun NavController.goToProfile(navOptions: NavOptions? = null) {
     this.navigate(route = AppNavigationRoute.Dashboard.Profile, navOptions)
 }
 
-fun NavGraphBuilder.profileDestination(navController: NavController) {
+internal fun NavGraphBuilder.profileDestination() {
     composable<AppNavigationRoute.Dashboard.Profile> {
         ProfileScreen()
     }
