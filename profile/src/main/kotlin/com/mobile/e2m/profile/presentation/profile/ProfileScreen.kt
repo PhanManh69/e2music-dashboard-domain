@@ -51,13 +51,18 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.plus
 
 @Composable
-internal fun ProfileScreen() {
-    ProfileScaffold()
+internal fun ProfileScreen(
+    menuOnClick: () -> Unit = { },
+) {
+    ProfileScaffold(
+        leadingIconOnClick = { menuOnClick() }
+    )
 }
 
 @Composable
 private fun ProfileScaffold(
     modifier: Modifier = Modifier,
+    leadingIconOnClick: () -> Unit = { },
 ) {
     val current = LocalDensity.current
     val headerCollapsedSize = remember { mutableStateOf(Size.Zero) }
@@ -76,6 +81,7 @@ private fun ProfileScaffold(
                     leadingIconId = R.drawable.ic_menu,
                     trailingIconId = R.drawable.ic_search,
                     title = getString().profileTxt,
+                    leadingIconOnClick = { leadingIconOnClick() }
                 )
             },
             content = {

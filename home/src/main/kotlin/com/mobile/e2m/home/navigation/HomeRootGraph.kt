@@ -6,6 +6,9 @@ import com.mobile.e2m.home.presentation.home.homeDestination
 
 fun NavGraphBuilder.homeRootNavGraph(
     navController: NavHostController,
+    menuOnClick: () -> Unit = { },
 ) {
-    homeDestination()
+    homeDestination(
+        menuOnClick = { menuOnClick() }
+    )
 }

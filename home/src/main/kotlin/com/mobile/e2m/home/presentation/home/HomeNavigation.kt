@@ -10,8 +10,12 @@ internal fun NavController.goToHome(navOptions: NavOptions? = null) {
     this.navigate(route = AppNavigationRoute.Dashboard.Home, navOptions)
 }
 
-internal fun NavGraphBuilder.homeDestination() {
+internal fun NavGraphBuilder.homeDestination(
+    menuOnClick: () -> Unit = { },
+) {
     composable<AppNavigationRoute.Dashboard.Home> {
-        HomeScreen()
+        HomeScreen(
+            menuOnClick = { menuOnClick() }
+        )
     }
 }

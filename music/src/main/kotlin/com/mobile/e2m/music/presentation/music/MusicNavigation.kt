@@ -10,8 +10,12 @@ internal fun NavController.goToMusic(navOptions: NavOptions? = null) {
     this.navigate(route = AppNavigationRoute.Dashboard.Music, navOptions)
 }
 
-internal fun NavGraphBuilder.musicDestination() {
+internal fun NavGraphBuilder.musicDestination(
+    menuOnClick: () -> Unit = { },
+) {
     composable<AppNavigationRoute.Dashboard.Music> {
-        MusicScreen()
+        MusicScreen(
+            menuOnClick = { menuOnClick() }
+        )
     }
 }

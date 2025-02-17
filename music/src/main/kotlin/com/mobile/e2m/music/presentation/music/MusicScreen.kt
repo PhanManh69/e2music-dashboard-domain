@@ -34,9 +34,11 @@ import com.mobile.e2m.music.presentation.songs.songsDestination
 @Composable
 internal fun MusicScreen(
     navController: NavHostController = rememberNavController(),
+    menuOnClick: () -> Unit = { },
 ) {
     MusicScaffold(
-        navController = navController
+        navController = navController,
+        leadingIconOnClick = { menuOnClick() }
     )
 }
 
@@ -44,6 +46,7 @@ internal fun MusicScreen(
 private fun MusicScaffold(
     modifier: Modifier = Modifier,
     navController: NavHostController,
+    leadingIconOnClick: () -> Unit = { },
 ) {
     Box(
         modifier = modifier.fillMaxSize()
@@ -56,6 +59,7 @@ private fun MusicScaffold(
                     leadingIconId = R.drawable.ic_menu,
                     trailingIconId = R.drawable.ic_search,
                     title = getString().musicTxt,
+                    leadingIconOnClick = { leadingIconOnClick() }
                 )
             },
             content = {

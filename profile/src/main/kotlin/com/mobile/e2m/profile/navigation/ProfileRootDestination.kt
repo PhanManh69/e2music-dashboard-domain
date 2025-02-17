@@ -5,8 +5,12 @@ import androidx.navigation.compose.composable
 import com.mobile.e2m.core.ui.navigation.route.AppNavigationRoute
 import com.mobile.e2m.profile.presentation.ProfileRootScreen
 
-fun NavGraphBuilder.profileRootDestination() {
+fun NavGraphBuilder.profileRootDestination(
+    menuOnClick: () -> Unit = { },
+) {
     composable<AppNavigationRoute.Dashboard.Profile> {
-        ProfileRootScreen()
+        ProfileRootScreen(
+            menuOnClick = { menuOnClick() }
+        )
     }
 }

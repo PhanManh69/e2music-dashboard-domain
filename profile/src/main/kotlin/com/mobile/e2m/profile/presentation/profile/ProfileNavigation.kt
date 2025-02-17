@@ -10,8 +10,12 @@ internal fun NavController.goToProfile(navOptions: NavOptions? = null) {
     this.navigate(route = AppNavigationRoute.Dashboard.Profile, navOptions)
 }
 
-internal fun NavGraphBuilder.profileDestination() {
+internal fun NavGraphBuilder.profileDestination(
+    menuOnClick: () -> Unit = { },
+) {
     composable<AppNavigationRoute.Dashboard.Profile> {
-        ProfileScreen()
+        ProfileScreen(
+            menuOnClick = { menuOnClick() }
+        )
     }
 }

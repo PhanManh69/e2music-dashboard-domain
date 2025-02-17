@@ -6,6 +6,9 @@ import com.mobile.e2m.profile.presentation.profile.profileDestination
 
 fun NavGraphBuilder.profileRootNavGraph(
     navController: NavHostController,
+    menuOnClick: () -> Unit = { },
 ) {
-    profileDestination()
+    profileDestination(
+        menuOnClick = { menuOnClick() }
+    )
 }

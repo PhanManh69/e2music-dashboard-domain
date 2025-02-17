@@ -56,6 +56,7 @@ internal fun getString(): GetStrings {
 @Composable
 fun ProfileRootScreen(
     navController: NavHostController = rememberNavController(),
+    menuOnClick: () -> Unit = { },
 ) {
     NavHost(
         navController = navController,
@@ -86,6 +87,7 @@ fun ProfileRootScreen(
     ) {
         profileRootNavGraph(
             navController = navController,
+            menuOnClick = { menuOnClick() }
         )
     }
 }
