@@ -51,6 +51,7 @@ internal fun getString(): GetStrings {
 fun HomeRootScreen(
     navController: NavHostController = rememberNavController(),
     menuOnClick: () -> Unit = { },
+    playSongOnClick: () -> Unit = { },
 ) {
     NavHost(
         navController = navController,
@@ -81,7 +82,8 @@ fun HomeRootScreen(
     ) {
         homeRootNavGraph(
             navController = navController,
-            menuOnClick = { menuOnClick() }
+            menuOnClick = { menuOnClick() },
+            playSongOnClick = { playSongOnClick() },
         )
     }
 }

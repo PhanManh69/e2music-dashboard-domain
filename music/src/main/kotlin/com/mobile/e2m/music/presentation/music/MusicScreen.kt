@@ -56,9 +56,9 @@ private fun MusicScaffold(
         E2MScaffold(
             topBar = {
                 E2MHeader(
+                    title = getString().musicTxt,
                     leadingIconId = R.drawable.ic_menu,
                     trailingIconId = R.drawable.ic_search,
-                    title = getString().musicTxt,
                     leadingIconOnClick = { leadingIconOnClick() }
                 )
             },
@@ -82,12 +82,17 @@ private fun MusicContent(
         modifier = modifier.fillMaxSize(),
     ) {
         MusicMenuTab(
-            modifier = Modifier.padding(top = size.spacing.large, bottom = size.spacing.small4x),
+            modifier = Modifier.padding(
+                top = size.spacing.large,
+                bottom = size.spacing.small4x
+            ),
             navController = navController,
         )
 
         Column(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier
+                .weight(1f)
+                .padding(bottom = size.spacing.large8x),         //TODO: has mini player
         ) {
             NavHost(
                 navController = navController,

@@ -12,10 +12,12 @@ internal fun NavController.goToHome(navOptions: NavOptions? = null) {
 
 internal fun NavGraphBuilder.homeDestination(
     menuOnClick: () -> Unit = { },
+    playSongOnClick: () -> Unit = { },
 ) {
     composable<AppNavigationRoute.Dashboard.Home> {
         HomeScreen(
-            menuOnClick = { menuOnClick() }
+            menuOnClick = { menuOnClick() },
+            playSongOnClick = { playSongOnClick() },
         )
     }
 }

@@ -1,7 +1,13 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.mobile.e2m.dashboard.presentation
 
 import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.consumeWindowInsets
@@ -12,16 +18,30 @@ import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.rememberDrawerState
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.toSize
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.mobile.e2m.core.ui.composable.E2MScaffold
+import com.mobile.e2m.core.ui.composable.background.E2MBackgroundDark
 import com.mobile.e2m.core.ui.composable.shadowCustom
 import com.mobile.e2m.core.ui.navigation.route.AppNavigationRoute
 import com.mobile.e2m.core.ui.theme.E2MTheme
@@ -30,9 +50,16 @@ import com.mobile.e2m.dashboard.router.DashboardRouter
 import com.mobile.e2m.home.navigation.homeRootDestination
 import com.mobile.e2m.menu.presentation.MenuSheet
 import com.mobile.e2m.music.navigation.musicRootDestination
+import com.mobile.e2m.playmusic.presentation.miniPlayer.MiniPlayerSheet
+import com.mobile.e2m.playmusic.presentation.playmusic.PlaymusicSheet
 import com.mobile.e2m.profile.navigation.profileRootDestination
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
+
+sealed class SheetType {
+    data object MiniPlayer : SheetType()
+    data object PlayMusic : SheetType()
+}
 
 @Composable
 internal fun DashboardScreen(
@@ -80,10 +107,15 @@ internal fun DashboardScaffold(
     onAudioQuality: () -> Unit = { },
     onPrivacySocial: () -> Unit = { },
 ) {
+    val current = LocalDensity.current
     val color = E2MTheme.alias.color.surface
     val size = E2MTheme.alias.size
     val scope = rememberCoroutineScope()
+    val buttonBarSize = remember { mutableStateOf(Size.Zero) }
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+
+    var currentSheet by remember { mutableStateOf<SheetType?>(null) }
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -114,65 +146,126 @@ internal fun DashboardScaffold(
             }
         }
     ) {
-        E2MScaffold(
-            bottomBar = {
-                DashboardNavButton(navController = navController)
-            }
+        Box(
+            modifier = Modifier.fillMaxSize()
         ) {
-            NavHost(
-                navController = navController,
-                startDestination = AppNavigationRoute.Dashboard.Home,
-                modifier = Modifier
-                    .consumeWindowInsets(WindowInsets.navigationBars.only(WindowInsetsSides.Vertical))
-                    .consumeWindowInsets(WindowInsets.ime),
-                enterTransition = {
-                    slideIntoContainer(
-                        AnimatedContentTransitionScope.SlideDirection.Start, tween(700),
+            E2MScaffold(
+                bottomBar = {
+                    DashboardNavButton(
+                        modifier = Modifier.onGloballyPositioned {
+                            buttonBarSize.value = it.size.toSize()
+                        },
+                        navController = navController
                     )
-                },
-                exitTransition = {
-                    slideOutOfContainer(
-                        AnimatedContentTransitionScope.SlideDirection.Start, tween(700),
-                    )
-                },
-                popExitTransition = {
-                    slideOutOfContainer(
-                        AnimatedContentTransitionScope.SlideDirection.End, tween(700),
-                    )
-                },
-                popEnterTransition = {
-                    slideIntoContainer(
-                        AnimatedContentTransitionScope.SlideDirection.End, tween(700),
-                    )
-                },
+                }
             ) {
-                homeRootDestination(
-                    menuOnClick = {
-                        scope.launch {
-                            drawerState.apply {
-                                if (isClosed) open() else close()
+                NavHost(
+                    navController = navController,
+                    startDestination = AppNavigationRoute.Dashboard.Home,
+                    modifier = Modifier
+                        .consumeWindowInsets(WindowInsets.navigationBars.only(WindowInsetsSides.Vertical))
+                        .consumeWindowInsets(WindowInsets.ime),
+                    enterTransition = {
+                        slideIntoContainer(
+                            AnimatedContentTransitionScope.SlideDirection.Start, tween(700),
+                        )
+                    },
+                    exitTransition = {
+                        slideOutOfContainer(
+                            AnimatedContentTransitionScope.SlideDirection.Start, tween(700),
+                        )
+                    },
+                    popExitTransition = {
+                        slideOutOfContainer(
+                            AnimatedContentTransitionScope.SlideDirection.End, tween(700),
+                        )
+                    },
+                    popEnterTransition = {
+                        slideIntoContainer(
+                            AnimatedContentTransitionScope.SlideDirection.End, tween(700),
+                        )
+                    },
+                ) {
+                    homeRootDestination(
+                        menuOnClick = {
+                            scope.launch {
+                                drawerState.apply {
+                                    if (isClosed) open() else close()
+                                }
                             }
+                        },
+                        playSongOnClick = {
+                            currentSheet = SheetType.PlayMusic
+                        }
+                    )
+                    musicRootDestination(
+                        menuOnClick = {
+                            scope.launch {
+                                drawerState.apply {
+                                    if (isClosed) open() else close()
+                                }
+                            }
+                        }
+                    )
+                    profileRootDestination(
+                        menuOnClick = {
+                            scope.launch {
+                                drawerState.apply {
+                                    if (isClosed) open() else close()
+                                }
+                            }
+                        }
+                    )
+                }
+            }
+
+            AnimatedVisibility(
+                modifier = Modifier
+                    .padding(bottom = with(current) { buttonBarSize.value.height.toDp() })
+                    .align(Alignment.BottomCenter),
+                visible = currentSheet != SheetType.PlayMusic,
+                enter = slideInVertically { it },
+                exit = slideOutVertically { it }
+            ) {
+                MiniPlayerSheet(
+                    goToPlaymusic = {
+                        scope.launch {
+                            bottomSheetState.show()
+                            currentSheet = SheetType.PlayMusic
                         }
                     }
                 )
-                musicRootDestination(
-                    menuOnClick = {
+            }
+
+            if (currentSheet == SheetType.PlayMusic) {
+                ModalBottomSheet(
+                    onDismissRequest = {
                         scope.launch {
-                            drawerState.apply {
-                                if (isClosed) open() else close()
-                            }
+                            bottomSheetState.hide()
+                            currentSheet = SheetType.MiniPlayer
                         }
-                    }
-                )
-                profileRootDestination(
-                    menuOnClick = {
-                        scope.launch {
-                            drawerState.apply {
-                                if (isClosed) open() else close()
+                    },
+                    sheetState = bottomSheetState,
+                    containerColor = Color.Transparent,
+                    shape = RoundedCornerShape(size.radius.radius7),
+                    contentWindowInsets = { WindowInsets(size.spacing.none) },
+                    dragHandle = { },
+                ) {
+                    Box(
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        E2MBackgroundDark()
+
+                        PlaymusicSheet(
+                            goBack = {
+                                scope.launch {
+                                    bottomSheetState.hide()
+                                    currentSheet = SheetType.MiniPlayer
+                                }
                             }
-                        }
+                        )
                     }
-                )
+                }
             }
         }
     }

@@ -185,7 +185,7 @@ private fun ProfileContent(
             modifier = modifier
                 .padding(
                     top = size.spacing.large8x,
-                    bottom = currentImageSize,
+                    bottom = currentImageSize + size.spacing.large8x,       //TODO: has mini player
                 )
                 .offset {
                     IntOffset(0, currentImageSize.roundToPx())

@@ -7,10 +7,12 @@ import com.mobile.e2m.home.presentation.HomeRootScreen
 
 fun NavGraphBuilder.homeRootDestination(
     menuOnClick: () -> Unit = { },
+    playSongOnClick: () -> Unit = { },
 ) {
     composable<AppNavigationRoute.Dashboard.Home> {
         HomeRootScreen(
-            menuOnClick = { menuOnClick() }
+            menuOnClick = { menuOnClick() },
+            playSongOnClick = { playSongOnClick() },
         )
     }
 }

@@ -108,9 +108,9 @@ private fun HomeHeaderSearch(
             E2MIcon(
                 modifier = Modifier
                     .size(size.icon.smallX)
-                    .align(Alignment.CenterStart),
+                    .align(Alignment.CenterStart)
+                    .debounceClickable { menuOnClick() },
                 iconId = iconId,
-                onClick = { menuOnClick() }
             )
         }
 

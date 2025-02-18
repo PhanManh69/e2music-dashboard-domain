@@ -26,6 +26,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import com.mobile.e2m.core.ui.R
 import com.mobile.e2m.core.ui.composable.E2MAsyncImage
 import com.mobile.e2m.core.ui.composable.E2MIcon
+import com.mobile.e2m.core.ui.composable.debounceClickable
 import com.mobile.e2m.core.ui.theme.E2MTheme
 import com.mobile.e2m.music.presentation.getString
 
@@ -174,10 +175,11 @@ private fun PlaylistRecommendItem(
             }
 
             E2MIcon(
-                modifier = Modifier.size(size.icon.smallX),
+                modifier = Modifier
+                    .size(size.icon.smallX)
+                    .debounceClickable { onClick() },
                 iconId = R.drawable.ic_play_circle,
                 tint = color.icon.blue2Light,
-                onClick = { onClick() }
             )
         }
     }

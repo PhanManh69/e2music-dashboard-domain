@@ -5,10 +5,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,6 +20,7 @@ import com.mobile.e2m.core.ui.composable.E2MAsyncImage
 import com.mobile.e2m.core.ui.composable.E2MIcon
 import com.mobile.e2m.core.ui.theme.E2MTheme
 import com.mobile.e2m.core.ui.R
+import com.mobile.e2m.core.ui.composable.debounceClickable
 import com.mobile.e2m.music.presentation.getString
 
 @Immutable
@@ -75,10 +74,11 @@ internal fun AlbumItem(
             }
 
             E2MIcon(
-                modifier = Modifier.size(size.icon.small2X),
+                modifier = Modifier
+                    .size(size.icon.small2X)
+                    .debounceClickable { menuDotsOnClick() },
                 iconId = R.drawable.ic_menu_dots_vertical,
                 tint = color.icon.blue2Light,
-                onClick = { menuDotsOnClick() }
             )
         }
 
