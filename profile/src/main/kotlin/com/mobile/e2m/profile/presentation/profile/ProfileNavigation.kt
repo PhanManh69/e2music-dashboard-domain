@@ -12,10 +12,12 @@ internal fun NavController.goToProfile(navOptions: NavOptions? = null) {
 
 internal fun NavGraphBuilder.profileDestination(
     menuOnClick: () -> Unit = { },
+    signOutOnClick: () -> Unit = { },
 ) {
     composable<AppNavigationRoute.Dashboard.Profile> {
         ProfileScreen(
-            menuOnClick = { menuOnClick() }
+            menuOnClick = { menuOnClick() },
+            signOutOnClick = { signOutOnClick() },
         )
     }
 }

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
@@ -61,6 +62,7 @@ private fun PlaylistScaffold(
     Box(
         modifier = modifier
             .fillMaxSize()
+            .padding(bottom = size.spacing.large8x)     //TODO: has mini player
             .onGloballyPositioned { layoutCoordinates ->
                 boxWidth.intValue = layoutCoordinates.size.width
                 boxHeight.intValue = layoutCoordinates.size.height

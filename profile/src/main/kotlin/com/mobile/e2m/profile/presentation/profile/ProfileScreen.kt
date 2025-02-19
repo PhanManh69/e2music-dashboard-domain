@@ -42,6 +42,7 @@ import com.mobile.e2m.profile.presentation.getString
 import com.mobile.e2m.profile.presentation.profile.composable.ProfileAvatar
 import com.mobile.e2m.profile.presentation.profile.composable.ProfileBanner
 import com.mobile.e2m.profile.presentation.profile.composable.ProfileButton
+import com.mobile.e2m.profile.presentation.profile.composable.ProfileDialogLogout
 import com.mobile.e2m.profile.presentation.profile.composable.ProfileLikes
 import com.mobile.e2m.profile.presentation.profile.composable.ProfileMyMusic
 import com.mobile.e2m.profile.presentation.profile.composable.ProfileMyMusicData
@@ -53,9 +54,11 @@ import kotlinx.collections.immutable.plus
 @Composable
 internal fun ProfileScreen(
     menuOnClick: () -> Unit = { },
+    signOutOnClick: () -> Unit = { },
 ) {
     ProfileScaffold(
-        leadingIconOnClick = { menuOnClick() }
+        leadingIconOnClick = { menuOnClick() },
+        signOutOnClick = { signOutOnClick() },
     )
 }
 
@@ -63,6 +66,7 @@ internal fun ProfileScreen(
 private fun ProfileScaffold(
     modifier: Modifier = Modifier,
     leadingIconOnClick: () -> Unit = { },
+    signOutOnClick: () -> Unit = { },
 ) {
     val current = LocalDensity.current
     val headerCollapsedSize = remember { mutableStateOf(Size.Zero) }
@@ -86,7 +90,8 @@ private fun ProfileScaffold(
             },
             content = {
                 ProfileContent(
-                    offsetYBanner = with(current) { headerCollapsedSize.value.height.toDp() }
+                    offsetYBanner = with(current) { headerCollapsedSize.value.height.toDp() },
+                    signOutOnClick = { signOutOnClick() }
                 )
             }
         )
@@ -97,11 +102,13 @@ private fun ProfileScaffold(
 private fun ProfileContent(
     modifier: Modifier = Modifier,
     offsetYBanner: Dp,
+    signOutOnClick: () -> Unit = { },
 ) {
     val size = E2MTheme.alias.size
     val color = E2MTheme.alias.color
     val maxImageSize = size.icon.largeX
     val minImageSize = size.icon.large
+    val openDialog = remember { mutableStateOf(false) }
     val itemsProfileUser = ProfileUserData(
         bannerId = R.drawable.img_song,
         avatarId = R.drawable.img_profile,
@@ -228,7 +235,10 @@ private fun ProfileContent(
 
             item {
                 ProfileButton(
-                    items = fakeProfileButtonData()
+                    items = fakeProfileButtonData(),
+                    signOutOnClick = {
+                        openDialog.value = true
+                    }
                 )
             }
         }
@@ -240,7 +250,6 @@ private fun ProfileContent(
                 .offset(0.dp, -offsetYBanner),
             items = itemsProfileUser,
         )
-
 
         Box(
             modifier = Modifier.align(Alignment.TopCenter),
@@ -266,4 +275,9 @@ private fun ProfileContent(
             )
         }
     }
+
+    ProfileDialogLogout(
+        openDialog = openDialog,
+        signOutOnClick = { signOutOnClick() }
+    )
 }

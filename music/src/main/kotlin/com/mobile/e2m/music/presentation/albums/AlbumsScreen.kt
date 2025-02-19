@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -13,9 +12,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.mobile.e2m.core.ui.R
-import com.mobile.e2m.core.ui.composable.E2MHeader
-import com.mobile.e2m.core.ui.composable.E2MScaffold
-import com.mobile.e2m.core.ui.composable.E2MSongsData
 import com.mobile.e2m.core.ui.theme.E2MTheme
 import com.mobile.e2m.music.presentation.albums.composable.AlbumItem
 import com.mobile.e2m.music.presentation.albums.composable.AlbumLoadItem
@@ -58,8 +54,10 @@ private fun AlbumsScaffold(
         verticalArrangement = Arrangement.spacedBy(size.spacing.small),
         horizontalArrangement = Arrangement.spacedBy(size.spacing.small),
         contentPadding = PaddingValues(
-            vertical = size.spacing.large,
-            horizontal = size.spacing.small,
+            top = size.spacing.large,
+            bottom = size.spacing.large5x,
+            start = size.spacing.small,
+            end = size.spacing.small,
         )
     ) {
         if (isLoading) {

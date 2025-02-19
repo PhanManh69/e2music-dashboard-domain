@@ -30,6 +30,8 @@ data class GetStrings(
     val viewsTxt: String,
     val myMusicTxt: String,
     val signOutTxt: String,
+    val cancelTxt: String,
+    val doYouWantToLogOutTxt: String,
 ) {
     companion object {
         @Composable
@@ -44,6 +46,8 @@ data class GetStrings(
             viewsTxt = context.getString(R.string.views),
             myMusicTxt = context.getString(R.string.myMusic),
             signOutTxt = context.getString(R.string.signOut),
+            cancelTxt = context.getString(R.string.cancel),
+            doYouWantToLogOutTxt = context.getString(R.string.doYouWantToLogOut),
         )
     }
 }
@@ -57,6 +61,7 @@ internal fun getString(): GetStrings {
 fun ProfileRootScreen(
     navController: NavHostController = rememberNavController(),
     menuOnClick: () -> Unit = { },
+    signOutOnClick: () -> Unit = { },
 ) {
     NavHost(
         navController = navController,
@@ -87,7 +92,8 @@ fun ProfileRootScreen(
     ) {
         profileRootNavGraph(
             navController = navController,
-            menuOnClick = { menuOnClick() }
+            menuOnClick = { menuOnClick() },
+            signOutOnClick = { signOutOnClick() },
         )
     }
 }

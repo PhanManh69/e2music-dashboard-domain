@@ -22,6 +22,7 @@ import com.mobile.e2m.profile.presentation.getString
 internal fun ProfileButton(
     modifier: Modifier = Modifier,
     items: List<Int>,
+    signOutOnClick: () -> Unit = { },
 ) {
     val context = LocalContext.current
     val size = E2MTheme.alias.size
@@ -41,6 +42,7 @@ internal fun ProfileButton(
                 .fillMaxWidth()
                 .padding(top = size.spacing.small2x),
             title = getString().signOutTxt,
+            onClick = { signOutOnClick() }
         )
     }
 }

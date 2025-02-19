@@ -7,10 +7,12 @@ import com.mobile.e2m.profile.presentation.ProfileRootScreen
 
 fun NavGraphBuilder.profileRootDestination(
     menuOnClick: () -> Unit = { },
+    signOutOnClick: () -> Unit = { },
 ) {
     composable<AppNavigationRoute.Dashboard.Profile> {
         ProfileRootScreen(
-            menuOnClick = { menuOnClick() }
+            menuOnClick = { menuOnClick() },
+            signOutOnClick = { signOutOnClick() },
         )
     }
 }

@@ -91,6 +91,9 @@ internal fun DashboardScreen(
         },
         onPrivacySocial = {
             dashboardRouter.onPrivacySocial()
+        },
+        signOutOnClick = {
+            dashboardRouter.onDashboard()
         }
     )
 }
@@ -106,6 +109,7 @@ internal fun DashboardScaffold(
     onDriveMode: () -> Unit = { },
     onAudioQuality: () -> Unit = { },
     onPrivacySocial: () -> Unit = { },
+    signOutOnClick: () -> Unit = { },
 ) {
     val current = LocalDensity.current
     val color = E2MTheme.alias.color.surface
@@ -214,7 +218,8 @@ internal fun DashboardScaffold(
                                     if (isClosed) open() else close()
                                 }
                             }
-                        }
+                        },
+                        signOutOnClick = { signOutOnClick() }
                     )
                 }
             }

@@ -90,9 +90,7 @@ private fun MusicContent(
         )
 
         Column(
-            modifier = Modifier
-                .weight(1f)
-                .padding(bottom = size.spacing.large8x),         //TODO: has mini player
+            modifier = Modifier.weight(1f)
         ) {
             NavHost(
                 navController = navController,

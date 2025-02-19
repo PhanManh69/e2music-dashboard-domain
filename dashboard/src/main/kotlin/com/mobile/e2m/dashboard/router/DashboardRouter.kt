@@ -1,6 +1,8 @@
 package com.mobile.e2m.dashboard.router
 
 interface DashboardRouter {
+    fun onDashboard()
+
     fun onTheme()
 
     fun onTimer()
