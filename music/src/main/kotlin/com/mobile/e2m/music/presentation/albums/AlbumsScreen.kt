@@ -21,13 +21,18 @@ import kotlinx.collections.immutable.plus
 import kotlinx.coroutines.delay
 
 @Composable
-internal fun AlbumsScreen() {
-    AlbumsScaffold()
+internal fun AlbumsScreen(
+    checkMiniPlayer: Boolean = false,
+) {
+    AlbumsScaffold(
+        checkMiniPlayer = checkMiniPlayer,
+    )
 }
 
 @Composable
 private fun AlbumsScaffold(
     modifier: Modifier = Modifier,
+    checkMiniPlayer: Boolean = false,
 ) {
     val size = E2MTheme.alias.size
     val itemsList = persistentListOf<AlbumsData>().plus(
@@ -55,7 +60,7 @@ private fun AlbumsScaffold(
         horizontalArrangement = Arrangement.spacedBy(size.spacing.small),
         contentPadding = PaddingValues(
             top = size.spacing.large,
-            bottom = size.spacing.large5x,
+            bottom = if (checkMiniPlayer) size.spacing.large9x else size.spacing.large,
             start = size.spacing.small,
             end = size.spacing.small,
         )

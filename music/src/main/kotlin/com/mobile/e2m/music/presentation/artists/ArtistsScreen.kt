@@ -17,13 +17,18 @@ import kotlinx.collections.immutable.plus
 import kotlinx.coroutines.delay
 
 @Composable
-internal fun ArtistsScreen() {
-    ArtistsScaffold()
+internal fun ArtistsScreen(
+    checkMiniPlayer: Boolean = false,
+) {
+    ArtistsScaffold(
+        checkMiniPlayer = checkMiniPlayer,
+    )
 }
 
 @Composable
 private fun ArtistsScaffold(
     modifier: Modifier = Modifier,
+    checkMiniPlayer: Boolean = false,
 ) {
     val itemsList = persistentListOf<ArtistData>().plus(
         List(24) {
@@ -45,6 +50,7 @@ private fun ArtistsScaffold(
 
     E2MSelectionLoad(
         modifier = modifier,
+        checkMiniPlayer = checkMiniPlayer,
         isLoading = isLoading,
         items = itemsList,
         numberElementsLoad = 7,

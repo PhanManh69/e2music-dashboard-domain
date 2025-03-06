@@ -60,6 +60,7 @@ internal fun getString(): GetStrings {
 @Composable
 fun ProfileRootScreen(
     navController: NavHostController = rememberNavController(),
+    checkMiniPlayer: Boolean = false,
     menuOnClick: () -> Unit = { },
     signOutOnClick: () -> Unit = { },
 ) {
@@ -91,6 +92,7 @@ fun ProfileRootScreen(
         },
     ) {
         profileRootNavGraph(
+            checkMiniPlayer = checkMiniPlayer,
             navController = navController,
             menuOnClick = { menuOnClick() },
             signOutOnClick = { signOutOnClick() },

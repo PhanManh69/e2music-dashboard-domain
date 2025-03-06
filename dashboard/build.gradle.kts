@@ -7,6 +7,9 @@ android {
 }
 
 dependencies {
+    implementation(vc.concurrentCoroutines)
+    implementation(vc.bundleExoPlayer)
+
     implementation(project(mapOf("path" to ":dashboard-domain:home")))
     implementation(project(mapOf("path" to ":dashboard-domain:music")))
     implementation(project(mapOf("path" to ":dashboard-domain:profile")))

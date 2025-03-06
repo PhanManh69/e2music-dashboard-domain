@@ -10,8 +10,12 @@ internal fun NavController.goToPlaylists(navOptions: NavOptions? = null) {
     this.navigate(route = AppNavigationRoute.Dashboard.Music.Playlist, navOptions)
 }
 
-internal fun NavGraphBuilder.playlistsDestination() {
+internal fun NavGraphBuilder.playlistsDestination(
+    checkMiniPlayer: Boolean = false,
+) {
     composable<AppNavigationRoute.Dashboard.Music.Playlist> {
-        PlaylistsScreen()
+        PlaylistsScreen(
+            checkMiniPlayer = checkMiniPlayer,
+        )
     }
 }

@@ -18,7 +18,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.mobile.e2m.core.ui.composable.E2MHeader
-import com.mobile.e2m.core.ui.composable.E2MScaffold
+import com.mobile.e2m.core.ui.composable.scaffold.E2MScaffold
 import com.mobile.e2m.core.ui.composable.background.E2MBackgroundDark
 import com.mobile.e2m.core.ui.R
 import com.mobile.e2m.core.ui.navigation.route.AppNavigationRoute
@@ -33,11 +33,13 @@ import com.mobile.e2m.music.presentation.songs.songsDestination
 
 @Composable
 internal fun MusicScreen(
+    checkMiniPlayer: Boolean = false,
     navController: NavHostController = rememberNavController(),
     menuOnClick: () -> Unit = { },
 ) {
     MusicScaffold(
         navController = navController,
+        checkMiniPlayer = checkMiniPlayer,
         leadingIconOnClick = { menuOnClick() }
     )
 }
@@ -45,6 +47,7 @@ internal fun MusicScreen(
 @Composable
 private fun MusicScaffold(
     modifier: Modifier = Modifier,
+    checkMiniPlayer: Boolean = false,
     navController: NavHostController,
     leadingIconOnClick: () -> Unit = { },
 ) {
@@ -65,6 +68,7 @@ private fun MusicScaffold(
             content = {
                 MusicContent(
                     navController = navController,
+                    checkMiniPlayer = checkMiniPlayer,
                 )
             }
         )
@@ -75,6 +79,7 @@ private fun MusicScaffold(
 private fun MusicContent(
     modifier: Modifier = Modifier,
     navController: NavHostController,
+    checkMiniPlayer: Boolean = false,
 ) {
     val size = E2MTheme.alias.size
 
@@ -119,11 +124,21 @@ private fun MusicContent(
                     )
                 },
             ) {
-                songsDestination()
-                playlistsDestination()
-                albumsDestination()
-                artistsDestination()
-                genresDestination()
+                songsDestination(
+                    checkMiniPlayer = checkMiniPlayer,
+                )
+                playlistsDestination(
+                    checkMiniPlayer = checkMiniPlayer,
+                )
+                albumsDestination(
+                    checkMiniPlayer = checkMiniPlayer,
+                )
+                artistsDestination(
+                    checkMiniPlayer = checkMiniPlayer,
+                )
+                genresDestination(
+                    checkMiniPlayer = checkMiniPlayer,
+                )
             }
         }
     }

@@ -16,6 +16,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.mobile.e2m.core.datasource.remote.firebase.data.entity.SongsEntity
 import com.mobile.e2m.core.ui.navigation.route.AppNavigationRoute
 import com.mobile.e2m.core.ui.R
 import com.mobile.e2m.home.navigation.homeRootNavGraph
@@ -49,9 +50,10 @@ internal fun getString(): GetStrings {
 
 @Composable
 fun HomeRootScreen(
+    checkMiniPlayer: Boolean = false,
     navController: NavHostController = rememberNavController(),
     menuOnClick: () -> Unit = { },
-    playSongOnClick: () -> Unit = { },
+    playSongOnClick: (SongsEntity) -> Unit = { },
 ) {
     NavHost(
         navController = navController,
@@ -81,9 +83,10 @@ fun HomeRootScreen(
         },
     ) {
         homeRootNavGraph(
+            checkMiniPlayer = checkMiniPlayer,
             navController = navController,
             menuOnClick = { menuOnClick() },
-            playSongOnClick = { playSongOnClick() },
+            playSongOnClick = { playSongOnClick(it) },
         )
     }
 }

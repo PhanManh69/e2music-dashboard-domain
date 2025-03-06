@@ -10,44 +10,64 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import com.mobile.e2m.core.ui.R
-import com.mobile.e2m.core.ui.composable.E2MScaffold
-import com.mobile.e2m.core.ui.composable.E2MSongsData
-import com.mobile.e2m.core.ui.composable.E2MSongsItem
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.mobile.e2m.core.datasource.local.fakedata.model.AlbumsModel
+import com.mobile.e2m.core.datasource.remote.firebase.data.entity.SongsEntity
+import com.mobile.e2m.core.ui.composable.scaffold.E2MScaffold
 import com.mobile.e2m.core.ui.composable.background.E2MBackgroundDark
 import com.mobile.e2m.core.ui.theme.E2MTheme
+import com.mobile.e2m.core.ui.util.EventsEffect
 import com.mobile.e2m.home.presentation.getString
+import com.mobile.e2m.home.presentation.home.HomeConfig.NUMBER_LOADING
 import com.mobile.e2m.home.presentation.home.composable.HomeHeader
+import com.mobile.e2m.home.presentation.home.composable.HomeRecentlySongsItem
+import com.mobile.e2m.home.presentation.home.composable.HomeRecentlySongsLoad
 import com.mobile.e2m.home.presentation.home.composable.HomeRecommendAlbum
+import com.mobile.e2m.home.presentation.home.composable.HomeRecommendAlbumData
 import com.mobile.e2m.home.presentation.home.composable.HomeRecommendSong
-import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.plus
+import com.mobile.e2m.home.presentation.home.composable.HomeRecommendSongData
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 internal fun HomeScreen(
+    checkMiniPlayer: Boolean = false,
     menuOnClick: () -> Unit = { },
-    playSongOnClick: () -> Unit = { },
+    playSongOnClick: (SongsEntity) -> Unit = { },
+    viewModel: HomeViewModel = koinViewModel()
 ) {
+    val state by viewModel.stateFlow.collectAsStateWithLifecycle()
+
     HomeScaffold(
+        checkMiniPlayer = checkMiniPlayer,
+        isLoadingSong = state.isLoadingSong,
+        albumsList = state.albumsList,
+        songsList = state.songsList,
         menuOnClick = { menuOnClick() },
-        playSongOnClick = { playSongOnClick() },
+        playSongOnClick = { playSongOnClick(it) },
     )
 }
 
 @Composable
 private fun HomeScaffold(
     modifier: Modifier = Modifier,
+    checkMiniPlayer: Boolean = false,
+    isLoadingSong: Boolean = false,
     menuOnClick: () -> Unit = { },
-    playSongOnClick: () -> Unit = { },
+    albumsList: List<AlbumsModel>,
+    songsList: List<SongsEntity>,
+    playSongOnClick: (SongsEntity) -> Unit = { },
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
@@ -66,7 +86,11 @@ private fun HomeScaffold(
             },
             content = {
                 HomeContent(
-                    playSongOnClick = { playSongOnClick() }
+                    checkMiniPlayer = checkMiniPlayer,
+                    isLoadingSong = isLoadingSong,
+                    albumsList = albumsList,
+                    songsList = songsList,
+                    playSongOnClick = { playSongOnClick(it) },
                 )
             }
         )
@@ -76,31 +100,35 @@ private fun HomeScaffold(
 @Composable
 private fun HomeContent(
     modifier: Modifier = Modifier,
-    playSongOnClick: () -> Unit = { },
+    checkMiniPlayer: Boolean = false,
+    isLoadingSong: Boolean = false,
+    albumsList: List<AlbumsModel>,
+    songsList: List<SongsEntity>,
+    playSongOnClick: (SongsEntity) -> Unit = { },
     favouriteSongOnClick: () -> Unit = { },
 ) {
     val size = E2MTheme.alias.size
     val color = E2MTheme.alias.color
     val style = E2MTheme.typography
-    val itemsList = persistentListOf<E2MSongsData>().plus(
-        List(10) {
-            E2MSongsData(
-                imageId = R.drawable.img_song,
-                name = "Tên bài hát $it",
-                singer = "Tên nghệ sĩ $it",
-            )
-        }
-    )
+
+    var currentSongPlaying by remember { mutableIntStateOf(-1) }
 
     LazyColumn(
         modifier = modifier.fillMaxSize(),
         contentPadding = PaddingValues(
             top = size.spacing.large,
-            bottom = size.spacing.large5x,          //TODO: has mini player
+            bottom = if (checkMiniPlayer) size.spacing.large9x else size.spacing.large,
         ),
     ) {
         item {
-            HomeRecommendAlbum()
+            HomeRecommendAlbum(
+                items = albumsList.map {
+                    HomeRecommendAlbumData(
+                        imageUrl = it.avatar,
+                        title = it.name,
+                    )
+                }
+            )
         }
 
         item {
@@ -117,7 +145,16 @@ private fun HomeContent(
         }
 
         item {
-            HomeRecommendSong()
+            HomeRecommendSong(
+                isLoading = isLoadingSong,
+                items = songsList.map {
+                    HomeRecommendSongData(
+                        imageUrl = it.imageUrl,
+                        name = it.name,
+                        singer = it.singer,
+                    )
+                }
+            )
         }
 
         item {
@@ -156,18 +193,26 @@ private fun HomeContent(
             }
         }
 
-        items(itemsList.size) {
-            E2MSongsItem(
-                modifier = Modifier
-                    .padding(horizontal = size.spacing.small)
-                    .padding(bottom = if (it < itemsList.size - 1) size.spacing.small2x else size.spacing.none),
-                iconId = R.drawable.ic_favourite,
-                shape = RoundedCornerShape(size.radius.radius2),
-                blur = size.stroke.thickX,
-                songItem = itemsList[it],
-                imageOnClick = { playSongOnClick() },
-                iconOnClick = { favouriteSongOnClick() },
-            )
+        if (isLoadingSong) {
+            items(NUMBER_LOADING) {
+                HomeRecentlySongsLoad(
+                    loadIndex = it,
+                    numberLoad = NUMBER_LOADING,
+                )
+            }
+        } else {
+            items(songsList.size) { index ->
+                HomeRecentlySongsItem(
+                    songIndex = index,
+                    songsList = songsList,
+                    isCurrentPlaying = index == currentSongPlaying,
+                    playSongOnClick = {
+                        playSongOnClick(it)
+                        currentSongPlaying = index
+                    },
+                    favouriteSongOnClick = { favouriteSongOnClick() },
+                )
+            }
         }
     }
 }

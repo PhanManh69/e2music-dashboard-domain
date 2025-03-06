@@ -10,8 +10,12 @@ internal fun NavController.goToGenres(navOptions: NavOptions? = null) {
     this.navigate(route = AppNavigationRoute.Dashboard.Music.Genre, navOptions)
 }
 
-internal fun NavGraphBuilder.genresDestination() {
+internal fun NavGraphBuilder.genresDestination(
+    checkMiniPlayer: Boolean = false,
+) {
     composable<AppNavigationRoute.Dashboard.Music.Genre> {
-        GenresScreen()
+        GenresScreen(
+            checkMiniPlayer = checkMiniPlayer,
+        )
     }
 }

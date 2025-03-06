@@ -11,11 +11,13 @@ internal fun NavController.goToProfile(navOptions: NavOptions? = null) {
 }
 
 internal fun NavGraphBuilder.profileDestination(
+    checkMiniPlayer: Boolean = false,
     menuOnClick: () -> Unit = { },
     signOutOnClick: () -> Unit = { },
 ) {
     composable<AppNavigationRoute.Dashboard.Profile> {
         ProfileScreen(
+            checkMiniPlayer = checkMiniPlayer,
             menuOnClick = { menuOnClick() },
             signOutOnClick = { signOutOnClick() },
         )

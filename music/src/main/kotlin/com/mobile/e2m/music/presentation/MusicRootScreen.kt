@@ -52,6 +52,7 @@ internal fun getString(): GetStrings {
 @Composable
 fun MusicRootScreen(
     navController: NavHostController = rememberNavController(),
+    checkMiniPlayer: Boolean = false,
     menuOnClick: () -> Unit = { },
 ) {
     NavHost(
@@ -83,6 +84,7 @@ fun MusicRootScreen(
     ) {
         musicRootNavGraph(
             navController = navController,
+            checkMiniPlayer = checkMiniPlayer,
             menuOnClick = { menuOnClick() }
         )
     }
