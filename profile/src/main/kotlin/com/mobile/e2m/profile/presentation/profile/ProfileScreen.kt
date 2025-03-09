@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import com.mobile.e2m.core.ui.R
 import com.mobile.e2m.core.ui.composable.E2MHeader
-import com.mobile.e2m.core.ui.composable.E2MScaffold
+import com.mobile.e2m.core.ui.composable.scaffold.E2MScaffold
 import com.mobile.e2m.core.ui.composable.E2MSongsData
 import com.mobile.e2m.core.ui.composable.background.E2MBackgroundDark
 import com.mobile.e2m.core.ui.theme.E2MTheme
@@ -53,10 +53,12 @@ import kotlinx.collections.immutable.plus
 
 @Composable
 internal fun ProfileScreen(
+    checkMiniPlayer: Boolean = false,
     menuOnClick: () -> Unit = { },
     signOutOnClick: () -> Unit = { },
 ) {
     ProfileScaffold(
+        checkMiniPlayer = checkMiniPlayer,
         leadingIconOnClick = { menuOnClick() },
         signOutOnClick = { signOutOnClick() },
     )
@@ -65,6 +67,7 @@ internal fun ProfileScreen(
 @Composable
 private fun ProfileScaffold(
     modifier: Modifier = Modifier,
+    checkMiniPlayer: Boolean = false,
     leadingIconOnClick: () -> Unit = { },
     signOutOnClick: () -> Unit = { },
 ) {
@@ -90,6 +93,7 @@ private fun ProfileScaffold(
             },
             content = {
                 ProfileContent(
+                    checkMiniPlayer = checkMiniPlayer,
                     offsetYBanner = with(current) { headerCollapsedSize.value.height.toDp() },
                     signOutOnClick = { signOutOnClick() }
                 )
@@ -101,6 +105,7 @@ private fun ProfileScaffold(
 @Composable
 private fun ProfileContent(
     modifier: Modifier = Modifier,
+    checkMiniPlayer: Boolean = false,
     offsetYBanner: Dp,
     signOutOnClick: () -> Unit = { },
 ) {
@@ -140,7 +145,7 @@ private fun ProfileContent(
     val itemsLikeList = persistentListOf<E2MSongsData>().plus(
         List(5) {
             E2MSongsData(
-                imageId = R.drawable.img_song,
+                imageUrl = "",
                 name = "Tên bài hát $it",
                 singer = "Tên nghệ sĩ $it",
             )
@@ -190,15 +195,15 @@ private fun ProfileContent(
     ) {
         LazyColumn(
             modifier = modifier
-                .padding(
-                    top = size.spacing.large8x,
-                    bottom = currentImageSize + size.spacing.large8x,       //TODO: has mini player
-                )
+                .padding(top = size.spacing.large8x)
                 .offset {
                     IntOffset(0, currentImageSize.roundToPx())
                 },
-            contentPadding = PaddingValues(vertical = size.spacing.large),
-            verticalArrangement = Arrangement.spacedBy(size.spacing.large)
+            contentPadding = PaddingValues(
+                top = size.spacing.large,
+                bottom = currentImageSize + (if (checkMiniPlayer) size.spacing.large9x else size.spacing.large),
+            ),
+            verticalArrangement = Arrangement.spacedBy(size.spacing.large),
         ) {
             item {
                 ProfileMyMusic(

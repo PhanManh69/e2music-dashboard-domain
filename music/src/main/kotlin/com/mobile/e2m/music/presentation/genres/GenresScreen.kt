@@ -11,13 +11,18 @@ import com.mobile.e2m.music.data.local.fakeGenresData
 import com.mobile.e2m.music.presentation.genres.composable.GenreItem
 
 @Composable
-internal fun GenresScreen() {
-    GenresScaffold()
+internal fun GenresScreen(
+    checkMiniPlayer: Boolean = false,
+) {
+    GenresScaffold(
+        checkMiniPlayer = checkMiniPlayer,
+    )
 }
 
 @Composable
 private fun GenresScaffold(
     modifier: Modifier = Modifier,
+    checkMiniPlayer: Boolean = false,
 ) {
     val size = E2MTheme.alias.size
 
@@ -28,7 +33,7 @@ private fun GenresScaffold(
         horizontalArrangement = Arrangement.spacedBy(size.spacing.small),
         contentPadding = PaddingValues(
             top = size.spacing.large,
-            bottom = size.spacing.large5x,      //TODO: has mini player
+            bottom = if (checkMiniPlayer) size.spacing.large9x else size.spacing.large,
             start = size.spacing.small,
             end = size.spacing.small,
         )

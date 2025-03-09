@@ -6,9 +6,11 @@ import com.mobile.e2m.music.presentation.music.musicDestination
 
 fun NavGraphBuilder.musicRootNavGraph(
     navController: NavHostController,
+    checkMiniPlayer: Boolean = false,
     menuOnClick: () -> Unit = { },
 ) {
     musicDestination(
+        checkMiniPlayer = checkMiniPlayer,
         menuOnClick = { menuOnClick() }
     )
 }

@@ -32,13 +32,18 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.plus
 
 @Composable
-internal fun PlaylistsScreen() {
-    PlaylistScaffold()
+internal fun PlaylistsScreen(
+    checkMiniPlayer: Boolean = false,
+) {
+    PlaylistScaffold(
+        checkMiniPlayer = checkMiniPlayer,
+    )
 }
 
 @Composable
 private fun PlaylistScaffold(
     modifier: Modifier = Modifier,
+    checkMiniPlayer: Boolean = false,
     addPlaylistOnClick: () -> Unit = { },
 ) {
     val size = E2MTheme.alias.size
@@ -62,7 +67,7 @@ private fun PlaylistScaffold(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .padding(bottom = size.spacing.large8x)     //TODO: has mini player
+            .padding(bottom = if (checkMiniPlayer) size.spacing.large8x else size.spacing.none)
             .onGloballyPositioned { layoutCoordinates ->
                 boxWidth.intValue = layoutCoordinates.size.width
                 boxHeight.intValue = layoutCoordinates.size.height
@@ -111,7 +116,7 @@ private fun PlaylistScaffold(
                     }
                 },
             shape = CircleShape,
-            containerColor = color.surface.shadowDark,
+            containerColor = color.surface.whiteButtonFocus,
             onClick = { addPlaylistOnClick() }
         ) {
             E2MIcon(

@@ -17,19 +17,24 @@ import kotlinx.collections.immutable.plus
 import kotlinx.coroutines.delay
 
 @Composable
-internal fun SongsScreen() {
-    SongsScaffold()
+internal fun SongsScreen(
+    checkMiniPlayer: Boolean = false,
+) {
+    SongsScaffold(
+        checkMiniPlayer = checkMiniPlayer,
+    )
 }
 
 @Composable
 private fun SongsScaffold(
     modifier: Modifier = Modifier,
+    checkMiniPlayer: Boolean = false,
     onClick: () -> Unit = { },
 ) {
     val itemsList = persistentListOf<E2MSongsData>().plus(
         List(5000) {
             E2MSongsData(
-                imageId = R.drawable.img_song,
+                imageUrl = "",
                 name = "Tên bài hát $it",
                 singer = "Tên nghệ sĩ $it",
             )
@@ -45,6 +50,7 @@ private fun SongsScaffold(
 
     E2MSelectionLoad(
         modifier = modifier,
+        checkMiniPlayer = checkMiniPlayer,
         isLoading = isLoading,
         items = itemsList,
         itemContentComposable = {

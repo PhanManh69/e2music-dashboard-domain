@@ -11,10 +11,12 @@ internal fun NavController.goToMusic(navOptions: NavOptions? = null) {
 }
 
 internal fun NavGraphBuilder.musicDestination(
+    checkMiniPlayer: Boolean = false,
     menuOnClick: () -> Unit = { },
 ) {
     composable<AppNavigationRoute.Dashboard.Music> {
         MusicScreen(
+            checkMiniPlayer = checkMiniPlayer,
             menuOnClick = { menuOnClick() }
         )
     }
