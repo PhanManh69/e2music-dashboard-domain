@@ -2,10 +2,12 @@ package com.mobile.e2m.dashboard.presentation
 
 import android.app.Application
 import android.content.ComponentName
+import android.content.Intent
 import android.util.Log
 import androidx.annotation.OptIn
 import androidx.lifecycle.viewModelScope
 import androidx.media3.common.C
+import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.session.MediaController
@@ -48,9 +50,21 @@ class DashboardViewModel(
         }
     }
 
+    override fun onCleared() {
+        super.onCleared()
+
+        mediaController?.release()
+        mediaController = null
+
+        val indent = Intent(application, MusicService::class.java)
+        application.stopService(indent)
+    }
+
     @OptIn(UnstableApi::class)
-    private fun initializeMediaController() {
+    fun initializeMediaController() {
         viewModelScope.launch {
+            if (mediaController != null) return@launch
+
             val sessionToken = SessionToken(
                 application,
                 ComponentName(application, MusicService::class.java)
@@ -66,6 +80,12 @@ class DashboardViewModel(
                         mutableStateFlow.update { it.copy(isPlaying = isPlaying) }
                     }
 
+                    override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
+                        if (!isFirstLaunch) {
+                            playAfterSeek()
+                        }
+                    }
+
                     override fun onPlaybackStateChanged(playbackState: Int) {
                         mutableStateFlow.update {
                             it.copy(
@@ -78,7 +98,8 @@ class DashboardViewModel(
                 viewModelScope.launch {
                     while (true) {
                         if (mediaController != null) {
-                            val current = mediaController?.currentPosition?.formatDuration() ?: "00:00"
+                            val current =
+                                mediaController?.currentPosition?.formatDuration() ?: "00:00"
                             val max = mediaController?.duration?.formatDuration() ?: "00:00"
 
                             if (current != "00:00" && max != "00:00") {
@@ -94,8 +115,6 @@ class DashboardViewModel(
                     }
                 }
             }
-
-            isFirstLaunch = false
         }
     }
 
@@ -158,6 +177,7 @@ class DashboardViewModel(
     }
 
     private fun handleSongSelected(song: SongsEntity) {
+        isFirstLaunch = false
         val songIndex = state.songsList?.indexOfFirst { it.id == song.id }
         if (songIndex != null) {
             mediaController?.seekTo(songIndex, 0)
@@ -167,11 +187,13 @@ class DashboardViewModel(
 
     private fun handleNext() {
         mediaController?.seekToNext()
+        mediaController?.play()
         playAfterSeek()
     }
 
     private fun handlePrevious() {
         mediaController?.seekToPrevious()
+        mediaController?.play()
         playAfterSeek()
     }
 
@@ -194,8 +216,7 @@ class DashboardViewModel(
                 it.copy(
                     currentSong = songsFirebaseDataSource.getSongByMediaItem(mediaController?.currentMediaItem),
                     maxDuration = mediaController?.duration?.formatDuration() ?: "00:00",
-                    currentDuration = mediaController?.currentPosition?.formatDuration()
-                        ?: "00:00",
+                    currentDuration = mediaController?.currentPosition?.formatDuration() ?: "00:00",
                 )
             }
 

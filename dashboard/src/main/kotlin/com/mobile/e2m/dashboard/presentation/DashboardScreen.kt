@@ -1,6 +1,8 @@
 package com.mobile.e2m.dashboard.presentation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
@@ -17,6 +19,10 @@ internal fun DashboardScreen(
     viewModel: DashboardViewModel = koinViewModel(),
 ) {
     val state by viewModel.stateFlow.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        viewModel.initializeMediaController()
+    }
 
     DashboardScaffold(
         navController = navController,
